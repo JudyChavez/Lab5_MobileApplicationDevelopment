@@ -38,9 +38,17 @@ import com.example.notesapp.data.Note
 import com.example.notesapp.ui.AppViewModelProvider
 
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
+//import com.example.notesapp.ui.navigation.NavigationDestination
 
 
-
+//object HomeDestination : NavigationDestination {
+//    override val route = "home"
+//    override val titleRes = R.string.app_name
+//}
 
 /**
  * Entry route for Home screen
@@ -48,8 +56,8 @@ import androidx.compose.foundation.lazy.items
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-//    navigateToItemEntry: () -> Unit,
-//    navigateToItemUpdate: (Int) -> Unit,
+//    navigateToNoteEntry: () -> Unit,
+//    navigateToNoteUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -59,11 +67,16 @@ fun HomeScreen(
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
+    // Dialog state
+    var showEditDialog by remember { mutableStateOf(false) }
+    var selectedNote by remember { mutableStateOf<Note?>(null) }
+    
+
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             NotesTopAppBar(
-                title = "NotesTopAppBar",//stringResource(HomeDestination.titleRes),
+                title = stringResource(R.string.app_name),//"NotesTopAppBar",//stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior
             )
@@ -86,17 +99,31 @@ fun HomeScreen(
             //To pass the inventory list to this composable,
             // you must retrieve the inventory data from the repository and pass it into the HomeViewModel.
             noteList = homeUiState.noteList,//listOf(), // Empty list is being passed in for itemList
-            onNoteClick = {},//navigateToItemUpdate,
+            onNoteClick = {
+                selectedNote = it
+                showEditDialog = true
+            },//navigateToItemUpdate,
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding,
         )
+        // Show dialog if note is selected
+        if (showEditDialog && selectedNote != null) {
+            EditNoteDialog(
+                note = selectedNote!!,
+                onConfirm = { updatedNote ->
+                    viewModel.updateNote(updatedNote)
+                    showEditDialog = false
+                },
+                onCancel = { showEditDialog = false }
+            )
+        }
     }
 }
 
 @Composable
 private fun HomeBody(
     noteList: List<Note>,
-    onNoteClick: (Int) -> Unit,
+    onNoteClick: (Note) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -114,7 +141,7 @@ private fun HomeBody(
         } else {
             NoteList(
                 noteList = noteList,
-                onNoteClick = {},//{ onNoteClick(it.id) },
+                onNoteClick = onNoteClick, //{},//{ onNoteClick(it.id) },
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
@@ -133,12 +160,12 @@ private fun NoteList(
         modifier = modifier,
         contentPadding = contentPadding
     ) {
-        items(items = noteList, key = { it.id }) { item ->
+        items(items = noteList, key = { it.id }) { note ->
             NoteItem(
-                note = item,
+                note = note,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable {}//{ onNoteClick(note) }
+                    .clickable { onNoteClick(note) }
             )
         }
     }
@@ -174,10 +201,51 @@ private fun NoteItem(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-//            Text(
-//                text = stringResource(R.string.in_stock, item.quantity),
-//                style = MaterialTheme.typography.titleMedium
-//            )
         }
     }
 }
+
+@Composable
+fun EditNoteDialog(
+    note: Note,
+    onConfirm: (Note) -> Unit,
+    onCancel: () -> Unit
+) {
+    var title by remember { mutableStateOf(note.title) }
+    var content by remember { mutableStateOf(note.content) }
+
+    androidx.compose.material3.AlertDialog(
+        onDismissRequest = onCancel,
+        title = { Text("Edit Note") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                androidx.compose.material3.OutlinedTextField(
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("Title") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                androidx.compose.material3.OutlinedTextField(
+                    value = content,
+                    onValueChange = { content = it },
+                    label = { Text("Content") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            androidx.compose.material3.TextButton(onClick = {
+                val updatedNote = note.copy(title = title, content = content)
+                onConfirm(updatedNote)
+            }) {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            androidx.compose.material3.TextButton(onClick = onCancel) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+

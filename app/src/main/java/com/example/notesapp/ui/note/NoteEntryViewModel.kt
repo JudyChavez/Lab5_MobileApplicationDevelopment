@@ -35,6 +35,7 @@ class NoteEntryViewModel (
         }
     }
 
+    //insert an item into the Room database.
     suspend fun saveNote() {
         if (validateInput()) {
             notesRepository.insertNote(noteUiState.noteDetails.toNote())

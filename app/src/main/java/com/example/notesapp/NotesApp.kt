@@ -15,15 +15,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.notesapp.ui.home.HomeScreen
+//import com.example.notesapp.ui.navigation.NotesNavHost
 
 /**
  * Top level composable that represents screens for the application.
  */
 @Composable
 fun NotesApp(
-    //navController: NavHostController = rememberNavController()
+//    navController: NavHostController = rememberNavController()
 ) {
-    //InventoryNavHost(navController = navController)
+//    NotesNavHost(navController = navController)
 
     HomeScreen()
 
@@ -45,15 +46,15 @@ fun NotesTopAppBar(
         title = { Text(title) },
         modifier = modifier,
         scrollBehavior = scrollBehavior,
-//        navigationIcon = {
-//            if (canNavigateBack) {
-//                IconButton(onClick = navigateUp) {
-//                    Icon(
-//                        imageVector = Filled.ArrowBack,
-//                        contentDescription = stringResource(R.string.back_button)
-//                    )
-//                }
-//            }
-//        }
+        navigationIcon = {
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back_button)
+                    )
+                }
+            }
+        }
     )
 }
