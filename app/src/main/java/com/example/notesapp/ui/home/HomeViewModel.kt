@@ -32,6 +32,18 @@ class HomeViewModel(
         }
     }
 
+    fun insertNote(note: Note) {
+        viewModelScope.launch {
+            notesRepository.insertNote(note)
+        }
+    }
+
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            notesRepository.deleteNote(note)
+        }
+    }
+
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
