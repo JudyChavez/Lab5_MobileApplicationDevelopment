@@ -20,13 +20,13 @@ package com.example.notesapp.ui
 
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
-import androidx.lifecycle.createSavedStateHandle
+//import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.notesapp.NotesApplication
 import com.example.notesapp.ui.home.HomeViewModel
-import com.example.notesapp.ui.note.NoteEntryViewModel
+//import com.example.notesapp.ui.note.NoteEntryViewModel
 
 //import com.example.notesapp.ui.note.NoteDetailsViewModel
 //import com.example.notesapp.ui.note.NoteEditViewModel
@@ -44,10 +44,10 @@ object AppViewModelProvider {
 //                inventoryApplication().container.itemsRepository //add the ItemsRepository object as an argument.
 //            )
 //        }
-        // Initializer for ItemEntryViewModel
-        initializer {
-            NoteEntryViewModel(notesApplication().container.notesRepository)
-        }
+//        // Initializer for ItemEntryViewModel
+//        initializer {
+//            NoteEntryViewModel(notesApplication().container.notesRepository)
+//        }
 
 //        // Initializer for ItemDetailsViewModel
 //        initializer {

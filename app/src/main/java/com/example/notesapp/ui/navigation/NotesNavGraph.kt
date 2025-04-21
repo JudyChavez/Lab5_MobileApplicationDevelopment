@@ -1,5 +1,5 @@
-package com.example.notesapp.ui.navigation
-
+//package com.example.notesapp.ui.navigation
+//
 //import androidx.navigation.compose.NavHost
 //import androidx.navigation.navArgument
 //import com.example.notesapp.ui.home.HomeScreen

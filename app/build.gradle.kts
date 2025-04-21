@@ -71,6 +71,8 @@ android {
         implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
         implementation("androidx.navigation:navigation-compose:2.8.5")
 
+        implementation("androidx.compose.material:material-icons-extended") //ExpandMore/ExpandeLess icons.
+
         //Room
         implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
         ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")

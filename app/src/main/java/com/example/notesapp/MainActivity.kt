@@ -22,12 +22,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NotesAppTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android Repository Test",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -54,3 +48,11 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+//@Preview
+//@Composable
+//fun NotesAppDarkThemePreview() {
+//    NotesAppTheme(darkTheme = true) {
+//        NotesApp()
+//    }
+//}

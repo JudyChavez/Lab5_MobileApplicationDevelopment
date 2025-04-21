@@ -1,15 +1,25 @@
 package com.example.notesapp
 
 import android.R.string
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -22,12 +32,17 @@ import com.example.notesapp.ui.home.HomeScreen
  */
 @Composable
 fun NotesApp(
-//    navController: NavHostController = rememberNavController()
+//    isDarkMode: Boolean
 ) {
-//    NotesNavHost(navController = navController)
+    var isDarkMode by rememberSaveable { mutableStateOf(false) }
 
-    HomeScreen()
-
+    MaterialTheme(
+        colorScheme = if (isDarkMode) darkColorScheme() else lightColorScheme()
+    ) {
+        HomeScreen(
+            onToggleTheme = { isDarkMode = !isDarkMode }
+        )
+    }
 }
 
 /**
@@ -40,10 +55,11 @@ fun NotesTopAppBar(
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    onThemeToggle: () -> Unit,
     navigateUp: () -> Unit = {}
 ) {
-    CenterAlignedTopAppBar(
-        title = { Text(title) },
+    /*CenterAligned*/TopAppBar(
+        title = { Text(stringResource(R.string.my_notes)) },
         modifier = modifier,
         scrollBehavior = scrollBehavior,
         navigationIcon = {
@@ -55,6 +71,13 @@ fun NotesTopAppBar(
                     )
                 }
             }
+        },
+        actions = {
+            Switch(
+                checked = isSystemInDarkTheme(), // Initially reflect the system theme
+                onCheckedChange = { onThemeToggle() },
+            )
         }
     )
 }
+

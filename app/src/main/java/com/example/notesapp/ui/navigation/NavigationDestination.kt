@@ -1,5 +1,5 @@
-package com.example.notesapp.ui.navigation
-
+//package com.example.notesapp.ui.navigation
+//
 ///**
 // * Interface to describe the navigation destinations for the app
 // */
