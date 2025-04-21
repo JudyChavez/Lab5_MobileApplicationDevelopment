@@ -57,7 +57,7 @@ fun HomeScreen(
     // You use collectAsState(), which collects values from this StateFlow and represents its latest value via State.
     val homeUiState by viewModel.homeUiState.collectAsState()
 
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    //val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     // Edit Dialog state
     var showEditDialog by remember { mutableStateOf(false) }
@@ -72,12 +72,12 @@ fun HomeScreen(
 
 
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier,//.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             NotesTopAppBar(
                 title = stringResource(R.string.app_name),//"NotesTopAppBar",//stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
-                scrollBehavior = scrollBehavior,
+                //scrollBehavior = scrollBehavior,
                 onThemeToggle = onToggleTheme//{ isDarkMode = !isDarkMode } // Toggle theme state
             )
         },
