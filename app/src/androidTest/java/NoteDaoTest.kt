@@ -14,8 +14,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
-
-
 import com.example.notesapp.data.NotesDatabase
 import com.example.notesapp.data.NoteDao
 
@@ -26,12 +24,13 @@ import kotlin.jvm.Throws
 import com.example.notesapp.data.Note
 
 
+
     @RunWith(AndroidJUnit4::class)
     class NoteDaoTest {
         private lateinit var noteDao: NoteDao
         private lateinit var notesDatabase: NotesDatabase
 
-        //Declare items in the class ItemDaoTest for the database to use
+        //Declare notes in the class NoteDaoTest for the database to use
         private var note1 = Note(1, "Title1", "Content1", 1)
         private var note2 = Note(2, "Title2", "Content2", 2)
 
@@ -40,12 +39,12 @@ import com.example.notesapp.data.Note
         fun createDb() {
             val context: Context = ApplicationProvider.getApplicationContext()
             // Using an in-memory database because the information stored here disappears when the
-            // process is killed.
+            // process is killed. To do so, you use the inMemoryDatabaseBuilder()
             notesDatabase = Room.inMemoryDatabaseBuilder(context, NotesDatabase::class.java)
                 // Allowing main thread queries, just for testing.
-                .allowMainThreadQueries()
+                .allowMainThreadQueries() //You are running the DAO queries in the main thread with .allowMainThreadQueries(), just for testing.
                 .build()
-            noteDao = notesDatabase.noteDao() //initialize itemDao
+            noteDao = notesDatabase.noteDao() //initialize noteDao
         }
 
         //function to close the database. Annotate it with @After to close the database and run after every test.
@@ -55,7 +54,7 @@ import com.example.notesapp.data.Note
             notesDatabase.close()
         }
 
-        //utility functions to add one item, and then two items, to the database.
+        //utility functions to add one note, and then two notes, to the database.
         // Later, you use these functions in your test.
         // Mark them as suspend so they can run in a coroutine.
         private suspend fun addOneNoteToDb() {
@@ -66,10 +65,11 @@ import com.example.notesapp.data.Note
             noteDao.insert(note2)
         }
 
-        //test for inserting a single item into the database, insert()
+        //test for inserting a single note into the database, insert()
         @Test
         @Throws(Exception::class)
-        fun daoInsert_insertsNoteIntoDB() = runBlocking { //You run the test in a new coroutine with runBlocking{}. This setup is the reason you mark the utility functions as suspend.
+        //daoInsert_insertsNoteIntoDB()
+        fun testInsertNote() = runBlocking { //You run the test in a new coroutine with runBlocking{}. This setup is the reason you mark the utility functions as suspend.
             addOneNoteToDb() //utility function
             val allNotes = noteDao.getAllNotes().first() //read the first item in the database.
             assertEquals(allNotes[0], note1) //compare the expected value with the actual value.
@@ -78,7 +78,8 @@ import com.example.notesapp.data.Note
         //you add two items to the database inside a coroutine. Then you read the two items and compare them with the expected values.
         @Test
         @Throws(Exception::class)
-        fun daoGetAllNotes_returnsAllNotesFromDB() = runBlocking {
+        //daoGetAllNotes_returnsAllNotesFromDB()
+        fun testRetrieveNotes() = runBlocking {
             addTwoNotesToDb()
             val allNotes = noteDao.getAllNotes().first()
             assertEquals(allNotes[0], note1)
@@ -88,37 +89,42 @@ import com.example.notesapp.data.Note
         //test for the DAO function to update an entity.
         @Test
         @Throws(Exception::class)
-        fun daoUpdateNotes_updatesNotesInDB() = runBlocking { //Define the function and create a runBlocking block.
+        //daoUpdateNotes_updatesNotesInDB()
+        fun testUpdateNote() = runBlocking { //Define the function and create a runBlocking block.
             addTwoNotesToDb()
 
-            //Update the two entities with different values, calling itemDao.update.
-            noteDao.update(Note(1, "Title Apples", "Content Apples", 25))
-            noteDao.update(Note(2, "Title Bananas", "Content Bananas", 50))
+            //Update the two entities with different values, calling noteDao.update.
+            noteDao.update(Note(1, "Title Apples", "Content Apples", 10))
+            noteDao.update(Note(2, "Title Bananas", "Content Bananas", 20))
 
+            //Retrieve the entities with itemDao.getAllItems().
+                // Compare them to the updated entity and assert.
             val allNotes = noteDao.getAllNotes().first()
-            assertEquals(allNotes[0], Note(1, "Title Apples", "Content Apples", 25))
-            assertEquals(allNotes[1], Note(2, "Title Bananas", "Content Bananas", 50))
+            assertEquals(allNotes[0], Note(1, "Title Apples", "Content Apples", 10))
+            assertEquals(allNotes[1], Note(2, "Title Bananas", "Content Bananas", 20))
         }
 
         @Test
         @Throws(Exception::class)
-        fun daoDeleteNotes_deletesAllNotesFromDB() {
-            fun daoDeleteNotes_deletesAllNotesFromDB() = runBlocking {
-                addTwoNotesToDb()
-                noteDao.delete(note1)
-                noteDao.delete(note2)
-                //Retrieve the entities from the database and check that the list is empty.
-                val allNotes = noteDao.getAllNotes().first()
-                assertTrue(allNotes.isEmpty())
-            }
+        //daoDeleteNotes_deletesAllNotesFromDB()
+        fun testDeleteNote() = runBlocking {
+            //Add two items to the database and call itemDao.delete() on those two items to delete them from the database.
+            addTwoNotesToDb()
+            noteDao.delete(note1)
+            noteDao.delete(note2)
+            //Retrieve the entities from the database and check that the list is empty.
+            val allNotes = noteDao.getAllNotes().first()
+            assertTrue(allNotes.isEmpty())
         }
 
-        @Test
-        @Throws(Exception::class)
-        fun daoGetNote_returnsNoteFromDB() = runBlocking {
-            addOneNoteToDb()
-            //Retrieve the entity from the database using the itemDao.getItem() function and set it to a val named item.
-            val note = noteDao.getNote(1)
-            assertEquals(note.first(), note1)
-        }
+//Ignore for this lab: not needed for this lab, leaving for reference.
+//        @Test
+//        @Throws(Exception::class)
+//        //testRetrieveNote()
+//        fun daoGetNote_returnsNoteFromDB() = runBlocking {
+//            addOneNoteToDb()
+//            //Retrieve the entity from the database using the noteDao.getNote() function and set it to a val named note.
+//            val note = noteDao.getNote(1)
+//            assertEquals(note.first(), note1)
+//        }
     }
