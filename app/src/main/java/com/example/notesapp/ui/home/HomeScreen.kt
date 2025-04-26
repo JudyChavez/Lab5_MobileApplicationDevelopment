@@ -42,6 +42,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.testTag
+
+
 
 /**
  * Entry route for Home screen
@@ -51,7 +54,8 @@ import androidx.compose.runtime.setValue
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    onToggleTheme: () -> Unit
+    onToggleTheme: () -> Unit,
+    isDarkMode: Boolean
 ) {
     //collect the UI state from the HomeViewModel.
     // You use collectAsState(), which collects values from this StateFlow and represents its latest value via State.
@@ -78,7 +82,8 @@ fun HomeScreen(
                 title = stringResource(R.string.app_name),//"NotesTopAppBar",//stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 //scrollBehavior = scrollBehavior,
-                onThemeToggle = onToggleTheme//{ isDarkMode = !isDarkMode } // Toggle theme state
+                onThemeToggle = onToggleTheme,//{ isDarkMode = !isDarkMode } // Toggle theme state
+                isDarkMode = isDarkMode
             )
         },
         floatingActionButton = {
@@ -89,7 +94,7 @@ fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.item_entry_title)
+                    contentDescription = stringResource(R.string.note_entry_title) //used for UI Instrumented Testing
                 )
             }
         },
@@ -147,7 +152,7 @@ private fun HomeBody(
     ) {
         if (noteList.isEmpty()) {
             Text(
-                text = stringResource(R.string.no_item_description),
+                text = stringResource(R.string.no_note_description),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(contentPadding),
@@ -235,20 +240,24 @@ fun EditNoteDialog(
 
     androidx.compose.material3.AlertDialog(
         onDismissRequest = onCancel,
-        title = { Text("Edit Note") },
+        title = { Text("Edit Note") }, //used for UI Instrumented Test
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 androidx.compose.material3.OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
                     label = { Text("Title") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("EditTitleField")
                 )
                 androidx.compose.material3.OutlinedTextField(
                     value = content,
                     onValueChange = { content = it },
                     label = { Text("Content") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("EditContentField")
                 )
             }
         },
@@ -256,7 +265,10 @@ fun EditNoteDialog(
         // Combine Cancel and Delete in one dismissButton block
         dismissButton = {
             Row {
-                TextButton(onClick = onDelete) {
+                TextButton(
+                    onClick = onDelete,
+                    modifier = Modifier.testTag("DeleteNoteButton")
+                ) {
                     Text("Delete", color = MaterialTheme.colorScheme.error)
                 }
                 Spacer(modifier = Modifier.padding(start = 8.dp))
@@ -266,10 +278,13 @@ fun EditNoteDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = {
-                val updatedNote = note.copy(title = title, content = content)
-                onConfirm(updatedNote)
-            }) {
+            TextButton(
+                onClick = {
+                    val updatedNote = note.copy(title = title, content = content)
+                    onConfirm(updatedNote)
+                },
+                modifier = Modifier.testTag("SaveNoteButton")
+            ) {
                 Text("Save")
             }
         }
@@ -294,14 +309,18 @@ fun AddNoteDialog(
                 androidx.compose.material3.OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("Title") },
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text("Title") }, //used for UI Instrumented Testing
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("AddTitleField")
                 )
                 androidx.compose.material3.OutlinedTextField(
                     value = content,
                     onValueChange = { content = it },
-                    label = { Text("Content") },
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text("Content") }, //used for UI Instrumented Testing
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("AddContentField")
                 )
             }
         },

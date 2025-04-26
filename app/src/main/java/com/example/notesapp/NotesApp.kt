@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -32,15 +33,17 @@ import com.example.notesapp.ui.home.HomeScreen
  */
 @Composable
 fun NotesApp(
-//    isDarkMode: Boolean
+    isDarkMode: Boolean,
+    onToggleTheme: () -> Unit
 ) {
-    var isDarkMode by rememberSaveable { mutableStateOf(false) }
+    //var isDarkMode by rememberSaveable { mutableStateOf(false) }
 
     MaterialTheme(
         colorScheme = if (isDarkMode) darkColorScheme() else lightColorScheme()
     ) {
         HomeScreen(
-            onToggleTheme = { isDarkMode = !isDarkMode }
+            onToggleTheme = onToggleTheme,//{ isDarkMode = !isDarkMode },
+            isDarkMode = isDarkMode
         )
     }
 }
@@ -56,7 +59,8 @@ fun NotesTopAppBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     onThemeToggle: () -> Unit,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    isDarkMode: Boolean
 ) {
     /*CenterAligned*/TopAppBar(
         title = { Text(stringResource(R.string.my_notes)) },
@@ -74,8 +78,9 @@ fun NotesTopAppBar(
         },
         actions = {
             Switch(
-                checked = isSystemInDarkTheme(), // Initially reflect the system theme
+                checked = isDarkMode,//isSystemInDarkTheme(), // Initially reflect the system theme
                 onCheckedChange = { onThemeToggle() },
+                modifier = Modifier.testTag("ThemeToggleSwitch")
             )
         }
     )

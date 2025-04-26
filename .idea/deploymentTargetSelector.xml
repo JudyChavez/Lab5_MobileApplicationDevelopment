@@ -5,19 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="daoGetAllNotes_returnsAllNotesFromDB()">
+      <SelectionState runConfigName="NotesAppUITest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="daoUpdateNotes_updatesNotesInDB()">
+      <SelectionState runConfigName="testAddNewNoteUI()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="daoDeleteNotes_deletesAllNotesFromDB()">
+      <SelectionState runConfigName="testEditNoteUI()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="daoGetNote_returnsNoteFromDB()">
+      <SelectionState runConfigName="testDeleteNoteUI()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="NoteDaoTest">
+      <SelectionState runConfigName="testToggleDarkMode()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
