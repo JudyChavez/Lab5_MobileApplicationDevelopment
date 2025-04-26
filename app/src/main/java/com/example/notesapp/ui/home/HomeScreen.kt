@@ -20,13 +20,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +35,6 @@ import com.example.notesapp.NotesTopAppBar
 import com.example.notesapp.R
 import com.example.notesapp.data.Note
 import com.example.notesapp.ui.AppViewModelProvider
-
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.mutableStateOf
@@ -61,7 +59,6 @@ fun HomeScreen(
     // You use collectAsState(), which collects values from this StateFlow and represents its latest value via State.
     val homeUiState by viewModel.homeUiState.collectAsState()
 
-    //val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     // Edit Dialog state
     var showEditDialog by remember { mutableStateOf(false) }
@@ -94,7 +91,7 @@ fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.note_entry_title) //used for UI Instrumented Testing
+                    contentDescription = stringResource(R.string.note_entry_title)
                 )
             }
         },
@@ -205,10 +202,10 @@ private fun NoteItem(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = note.id.toString(),
-                    style = MaterialTheme.typography.titleLarge,
-                )
+//                Text(
+//                    text = note.id.toString(),
+//                    style = MaterialTheme.typography.titleLarge,
+//                )
                 Text(
                     text = note.title,
                     style = MaterialTheme.typography.titleLarge,
@@ -218,11 +215,11 @@ private fun NoteItem(
                     text = note.content,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = note.timestamp.toString(),
-                    style = MaterialTheme.typography.titleMedium
-                )
+//                Spacer(Modifier.weight(1f))
+//                Text(
+//                    text = note.timestamp.toString(),
+//                    style = MaterialTheme.typography.titleMedium
+//                )
             }
         }
     }
@@ -240,7 +237,7 @@ fun EditNoteDialog(
 
     androidx.compose.material3.AlertDialog(
         onDismissRequest = onCancel,
-        title = { Text("Edit Note") }, //used for UI Instrumented Test
+        title = { Text("Edit Note") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 androidx.compose.material3.OutlinedTextField(
@@ -309,7 +306,7 @@ fun AddNoteDialog(
                 androidx.compose.material3.OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("Title") }, //used for UI Instrumented Testing
+                    label = { Text("Title") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag("AddTitleField")
@@ -317,7 +314,7 @@ fun AddNoteDialog(
                 androidx.compose.material3.OutlinedTextField(
                     value = content,
                     onValueChange = { content = it },
-                    label = { Text("Content") }, //used for UI Instrumented Testing
+                    label = { Text("Content") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag("AddContentField")

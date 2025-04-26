@@ -17,10 +17,10 @@ class AppDataContainer(private val context: Context) : AppContainer {
     /**
      * Implementation for [NotesRepository]
      */
-    //Pass in the ItemDao() instance to the OfflineItemsRepository constructor.
+    //Pass in the NoteDao() instance to the OfflineNotesRepository constructor.
     //Instantiate the database instance
-        // by calling getDatabase() on the InventoryDatabase class
-        // passing in the context and call .itemDao() to create the instance of Dao.
+        // by calling getDatabase() on the NotesDatabase class
+        // passing in the context and call .noteDao() to create the instance of Dao.
     override val notesRepository: NotesRepository by lazy {
         OfflineNotesRepository(NotesDatabase.getDatabase(context).noteDao())
     }
