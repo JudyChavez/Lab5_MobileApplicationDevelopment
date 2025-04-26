@@ -92,16 +92,16 @@ class NotesAppUITest {
         composeTestRule.onNodeWithContentDescription("Add Note").performClick()
 
         // Type title and content
-        composeTestRule.onNodeWithTag("AddTitleField").performTextInput("Testing Note Title")
-        composeTestRule.onNodeWithTag("AddContentField").performTextInput("Testing Note Content")
+        composeTestRule.onNodeWithTag("AddTitleField").performTextInput("AddNew() - Testing Note Title")
+        composeTestRule.onNodeWithTag("AddContentField").performTextInput("AddNew() - Testing Note Content")
 
         // Save the note
         //find Text("Add") then perform onClick()
         composeTestRule.onNodeWithText("Add").performClick()
 
         // Assert that the new note displays in the list
-        composeTestRule.onNodeWithText("Testing Note Title").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Testing Note Content").assertIsDisplayed()
+        composeTestRule.onNodeWithText("AddNew() - Testing Note Title").assertIsDisplayed()
+        composeTestRule.onNodeWithText("AddNew() - Testing Note Content").assertIsDisplayed()
     }
 
     @Test
@@ -119,34 +119,34 @@ class NotesAppUITest {
 
         //Add new note for testing:
         composeTestRule.onNodeWithContentDescription("Add Note").performClick()
-        composeTestRule.onNodeWithTag("AddTitleField").performTextInput("Testing Note Title")
-        composeTestRule.onNodeWithTag("AddContentField").performTextInput("Testing Note Content")
+        composeTestRule.onNodeWithTag("AddTitleField").performTextInput("Edit() - Testing Note Title")
+        composeTestRule.onNodeWithTag("AddContentField").performTextInput("Edit() - Testing Note Content")
         composeTestRule.onNodeWithText("Add").performClick()
         //assert note in list
-        composeTestRule.onNodeWithText("Testing Note Title").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Testing Note Content").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Edit() - Testing Note Title").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Edit() - Testing Note Content").assertIsDisplayed()
 
 
         // Click a Note to edit it
         //finds text with "Testing Note Title" and calls onClick()
-        composeTestRule.onNodeWithText("Testing Note Title").performClick()
+        composeTestRule.onNodeWithText("Edit() - Testing Note Title").performClick()
 
         //assert EditNoteDialog displays ("Edit Note" displays)
         composeTestRule.onNodeWithText("Edit Note").assertIsDisplayed()
 
         // Edit title and content
         composeTestRule.onNodeWithTag("EditTitleField").performTextClearance() //clear, so it won't be appended.
-        composeTestRule.onNodeWithTag("EditTitleField").performTextInput("Edited Note Title")
+        composeTestRule.onNodeWithTag("EditTitleField").performTextInput("Edit() - Edited Note Title")
         composeTestRule.onNodeWithTag("EditContentField").performTextClearance()
-        composeTestRule.onNodeWithTag("EditContentField").performTextInput("Edited Note Content")
+        composeTestRule.onNodeWithTag("EditContentField").performTextInput("Edit() - Edited Note Content")
 
         // Save the updated changes to the note
         //find Text("Save") then perform onClick()
         composeTestRule.onNodeWithTag("SaveNoteButton").performClick()
 
         // Assert that the updates on the note displays in the list
-        composeTestRule.onNodeWithText("Edited Note Title").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Edited Note Content").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Edit() - Edited Note Title").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Edit() - Edited Note Content").assertIsDisplayed()
 
     }
 
@@ -165,16 +165,16 @@ class NotesAppUITest {
 
         //Add new note for testing:
         composeTestRule.onNodeWithContentDescription("Add Note").performClick()
-        composeTestRule.onNodeWithTag("AddTitleField").performTextInput("Testing Note Title")
-        composeTestRule.onNodeWithTag("AddContentField").performTextInput("Testing Note Content")
+        composeTestRule.onNodeWithTag("AddTitleField").performTextInput("Delete() - Testing Note Title")
+        composeTestRule.onNodeWithTag("AddContentField").performTextInput("Delete() - Testing Note Content")
         composeTestRule.onNodeWithText("Add").performClick()
         //assert note in list
-        composeTestRule.onNodeWithText("Testing Note Title").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Testing Note Content").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Delete() - Testing Note Title").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Delete() - Testing Note Content").assertIsDisplayed()
 
         // Click a Note to edit it
         //finds text with "Testing Note Title" and calls onClick()
-        composeTestRule.onNodeWithText("Testing Note Title").performClick()
+        composeTestRule.onNodeWithText("Delete() - Testing Note Title").performClick()
 
         //assert EditNoteDialog displays ("Edit Note" displays)
         composeTestRule.onNodeWithText("Edit Note").assertIsDisplayed()
@@ -183,8 +183,8 @@ class NotesAppUITest {
         composeTestRule.onNodeWithTag("DeleteNoteButton").performClick()
 
         // Assert that the note is no longer displayed in the list
-        composeTestRule.onNodeWithText("Testing Note Title").assertDoesNotExist()
-        composeTestRule.onNodeWithText("Testing Note Content").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Delete() - Testing Note Title").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Delete() - Testing Note Content").assertDoesNotExist()
     }
 
     @Test
